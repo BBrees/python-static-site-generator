@@ -1,20 +1,21 @@
 import re
+
 from yaml import load, FullLoader
 from collections.abc import Mapping
 
 class Content(Mapping):
-    __delimeter = "^(?:-|\+){3}\s*$"
-    __regex = re.complie(__delimeter, re.MULTILINE)
+    __delimeter = r"^(?:-|\+){3}\s*$"
+    __regex = re.compile(__delimeter, re.MULTILINE)
     
     @classmethod
     def load(cls, string):
-       _, fm, content = cls.__regex.split("sting", 2)
+       _, fm, content = cls.__regex.split(string, 2)
        metadata = load(fm, Loader = FullLoader)
 
        return cls(metadata, content)
     
-    def __init__(self,metadata, content):
-        data = metadata
+    def __init__(self, metadata, content):
+        self.data = metadata
         self.data["content"] = content
     
     @property
@@ -23,7 +24,7 @@ class Content(Mapping):
     
     @property
     def type(self):
-        return self.data["type"] if "type" in self.date else None
+        return self.data["type"] if "type" in self.data else None
     
     @type.setter
     def type(self, type):
@@ -36,7 +37,7 @@ class Content(Mapping):
         self.data.__iter__()
     
     def __len__(self):
-        self.data.__len__()
+        return len(self.data)
     
     def __repr__(self):
         data = {}
